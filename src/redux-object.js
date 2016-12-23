@@ -38,6 +38,5 @@ export default function build(reducer, objectName, id) {
     }
   }
 
-
   return ret;
 }
