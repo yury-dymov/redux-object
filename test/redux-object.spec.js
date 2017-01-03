@@ -19,7 +19,8 @@ describe('build works', () => {
           liker: {
             id: "1,2,3",
             type: "user"
-          }
+          },
+          comments: {}
         }
       }
     },
@@ -75,4 +76,7 @@ describe('build works', () => {
     expect(object.daQuestion.text).to.be.equal('hello?');
   });
 
+  it('works for empty relationship', () => {
+    expect(isEqual(object.comments, [])).to.be.true;
+  });
 });
