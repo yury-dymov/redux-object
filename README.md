@@ -1,6 +1,11 @@
 # redux-object
 Builds complex JS object from normalized redux store. Best works with [json-api-normalizer](https://github.com/yury-dymov/json-api-normalizer).
 
+[![npm version](https://img.shields.io/npm/v/redux-object.svg?style=flat)](https://www.npmjs.com/package/redux-object)
+[![Downloads](http://img.shields.io/npm/dm/redux-object.svg?style=flat-square)](https://npmjs.org/package/redux-object)
+[![Build Status](https://img.shields.io/travis/yury-dymov/redux-object/master.svg?style=flat)](https://travis-ci.org/yury-dymov/redux-object)
+[![Coverage Status](https://coveralls.io/repos/github/yury-dymov/redux-object/badge.svg?branch=master)](https://coveralls.io/github/yury-dymov/redux-object?branch=master)
+
 DEMO - [https://yury-dymov.github.io/json-api-react-redux-example/](https://yury-dymov.github.io/json-api-react-redux-example/)
 
 Demo sources and description - [https://github.com/yury-dymov/json-api-react-redux-example](https://github.com/yury-dymov/json-api-react-redux-example)
