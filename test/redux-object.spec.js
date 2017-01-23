@@ -82,4 +82,8 @@ describe('build works', () => {
   it('assigns id as attribute', () => {
     expect(object.id).to.be.equal(2620);
   });
+
+  it('assigns id as integer', () => {
+    expect(object.id).isNumber;
+  });
 });
