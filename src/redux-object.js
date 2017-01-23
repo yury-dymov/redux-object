@@ -1,4 +1,4 @@
-import keys from 'lodash/keys';
+import { keys, merge } from 'lodash';
 
 export default function build(reducer, objectName, id) {
   const ret = {};
@@ -42,5 +42,5 @@ export default function build(reducer, objectName, id) {
     }
   }
 
-  return ret;
+  return merge(ret, { id: id });
 }

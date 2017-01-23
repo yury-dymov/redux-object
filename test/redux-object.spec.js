@@ -9,7 +9,6 @@ describe('build works', () => {
       "2620": {
         attributes: {
           "text": "hello",
-          "id": 2620
         },
         relationships: {
           daQuestion: {
@@ -78,5 +77,9 @@ describe('build works', () => {
 
   it('works for empty relationship', () => {
     expect(isEqual(object.comments, [])).to.be.true;
+  });
+
+  it('assigns id as attribute', () => {
+    expect(object.id).to.be.equal(2620);
   });
 });
