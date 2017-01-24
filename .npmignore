@@ -6,4 +6,6 @@ test
 .babelrc
 .eslintrc
 .travis.yml
+.vscode
+.idea
 webpack.config.js
