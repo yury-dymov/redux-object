@@ -1,4 +1,5 @@
 import keys from 'lodash/keys';
+import has from 'lodash/has';
 
 export default function build(reducer, objectName, id) {
   const ret = {};
@@ -40,6 +41,10 @@ export default function build(reducer, objectName, id) {
         );
       });
     }
+  }
+
+  if (!has(ret.id)) {
+    ret.id = id.toString();
   }
 
   return ret;
