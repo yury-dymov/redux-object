@@ -80,10 +80,10 @@ describe('build works', () => {
   });
 
   it('assigns id as attribute', () => {
-    expect(object.id).to.be.equal(2620);
+    expect(object.id).to.be.equal('2620');
   });
 
-  it('assigns id as integer', () => {
-    expect(object.id).isNumber;
+  it('assigns correct id when in attribute', () => {
+    expect(object.daQuestion.id).to.be.equal('295');
   });
 });
