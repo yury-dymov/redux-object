@@ -2,9 +2,9 @@ import keys from 'lodash/keys';
 import has from 'lodash/has';
 
 export default function build(reducer, objectName, id) {
+  const ids = id.toString();
   const ret = {};
-
-  const target = reducer[objectName][id.toString()];
+  const target = reducer[objectName][ids];
 
   if (target) {
     keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
@@ -43,8 +43,8 @@ export default function build(reducer, objectName, id) {
     }
   }
 
-  if (!has(ret.id)) {
-    ret.id = id.toString();
+  if (!has(ret, 'id')) {
+    ret.id = ids;
   }
 
   return ret;

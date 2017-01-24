@@ -33,6 +33,7 @@ describe('build works', () => {
     user: {
       "1": {
         attributes: {
+	  id: 1,
           text: "hello?"
         }
       },
@@ -85,5 +86,11 @@ describe('build works', () => {
 
   it('assigns correct id when in attribute', () => {
     expect(object.daQuestion.id).to.be.equal('295');
+  });
+
+  it('id in attributes is not overwritten by merge', () => {
+    const user = build(json, 'user', 1);
+
+    expect(user.id).to.be.equal(1); // and not '1'
   });
 });
