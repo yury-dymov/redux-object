@@ -57,6 +57,8 @@ describe('build works', () => {
     }
   };
 
+  
+
   const object = build(json, 'post', 2620);
 
   it('attributes', () => {
@@ -92,5 +94,40 @@ describe('build works', () => {
     const user = build(json, 'user', 1);
 
     expect(user.id).to.be.equal(1); // and not '1'
+  });
+});
+
+describe('remote lazy loading', () => {
+  const source = {
+    question: {
+      "29": {
+        attributes: {
+          yday: 228,
+          text: "Какие качества Вы больше всего цените в женщинах?",
+          slug: "tbd",
+          id: 29        
+        },
+        relationships: {
+          movie: {
+            links: {
+              "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
+              "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"            
+            }
+          }
+        }
+      }
+    }
+  };
+
+  it('should throw exception', () => {
+    const question = build(source, 'question', 29);
+
+    try {
+      question.movie;
+    } catch (er) {
+      return expect(er.message).to.be.equal('Remote lazy loading is not implemented for redux-object. Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2');
+    }
+
+    throw new Error('test failed');
   });
 });

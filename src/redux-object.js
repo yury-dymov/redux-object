@@ -32,6 +32,10 @@ export default function build(reducer, objectName, id) {
                   ret[field] = ids.map(childId => build(reducer, rel.type, childId));
                 }
               } else {
+                if (rel.links) {
+                  throw new Error('Remote lazy loading is not implemented for redux-object. Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2');
+                }
+
                 ret[field] = [];
               }
 
