@@ -15,6 +15,10 @@ describe('build works', () => {
             id: "295",
             type: "question"
           },
+          missingRelationship: {
+            id: "296",
+            type: "question"
+          },
           liker: {
             id: "1,2,3",
             type: "user"
@@ -45,6 +49,10 @@ describe('build works', () => {
       "3": {
         attributes: {
           text: "hello?"
+        }
+      },
+      "4": {
+        attributes: {
         }
       }
     },
@@ -94,6 +102,23 @@ describe('build works', () => {
     const user = build(json, 'user', 1);
 
     expect(user.id).to.be.equal(1); // and not '1'
+  });
+
+  it('missing object should return null', () => {
+    const user = build(json, 'user', 30);
+
+    expect(user).to.be.equal(null);
+  });
+
+  it('missing relationship should be null', () => {
+    expect(object.missingRelationship).to.be.equal(null);
+  });
+
+  it('object with no attributes still should be an object', () => {
+    const user = build(json, 'user', 4);
+    const target = { id: "4" };
+
+    expect(user).to.be.eql(target);
   });
 });
 
