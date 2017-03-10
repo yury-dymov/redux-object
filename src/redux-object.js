@@ -10,6 +10,10 @@ export default function build(reducer, objectName, id) {
     return null;
   }
 
+  if (target.id) {
+    ret.id = target.id;
+  }
+
   keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
 
   if (target.relationships) {
