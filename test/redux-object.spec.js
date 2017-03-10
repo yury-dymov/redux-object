@@ -1,12 +1,12 @@
-import chai, { expect } from 'chai';
+import { expect } from 'chai';
 import build from '../dist/bundle';
 import isEqual from 'lodash/isEqual';
-import merge from 'lodash/merge';
 
 describe('build works', () => {
   const json = {
     post: {
       "2620": {
+        id: 2620,
         attributes: {
           "text": "hello",
         },
@@ -37,7 +37,7 @@ describe('build works', () => {
     user: {
       "1": {
         attributes: {
-	  id: 1,
+	      id: 1,
           text: "hello?"
         }
       },
@@ -90,8 +90,8 @@ describe('build works', () => {
     expect(isEqual(object.comments, [])).to.be.true;
   });
 
-  it('assigns id as attribute', () => {
-    expect(object.id).to.be.equal('2620');
+  it('id in target is not overwritten by merge', () => {
+    expect(object.id).to.be.equal(2620);
   });
 
   it('assigns correct id when in attribute', () => {
