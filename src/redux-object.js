@@ -32,12 +32,12 @@ export default function build(reducer, objectName, id) {
             const rel = target.relationships[relationship];
 
             if (rel.id) {
-              const ids = rel.id.split(',');
+              const idList = rel.id.split(',');
 
-              if (ids.length === 1) {
-                ret[field] = build(reducer, rel.type, ids[0]);
+              if (idList.length === 1) {
+                ret[field] = build(reducer, rel.type, idList[0]);
               } else {
-                ret[field] = ids.map(childId => build(reducer, rel.type, childId));
+                ret[field] = idList.map(childId => build(reducer, rel.type, childId));
               }
             } else {
               if (rel.links) {
