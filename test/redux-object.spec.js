@@ -12,18 +12,36 @@ describe('build works', () => {
         },
         relationships: {
           daQuestion: {
-            id: "295",
-            type: "question"
+            data: {
+              id: "295",
+              type: "question"
+            }
           },
           missingRelationship: {
-            id: "296",
-            type: "question"
+            data: {
+              id: "296",
+              type: "question"
+            }
           },
           liker: {
-            id: "1,2,3",
-            type: "user"
+            data: [{
+              id: "1",
+              type: "user"
+            },{
+              id: "2",
+              type: "user"
+            },{
+              id: "3",
+              type: "user"
+            }]
           },
-          comments: {}
+          comments: {
+            data: []
+          },
+          author: {
+            data: null
+          }
+
         }
       }
     },
@@ -86,8 +104,12 @@ describe('build works', () => {
     expect(object.daQuestion.text).to.be.equal('hello?');
   });
 
-  it('works for empty relationship', () => {
+  it('works for empty array relationship', () => {
     expect(isEqual(object.comments, [])).to.be.true;
+  });
+
+    it('works for empty relationship', () => {
+    expect(isEqual(object.author, null)).to.be.true;
   });
 
   it('id in target is not overwritten by merge', () => {
@@ -144,6 +166,28 @@ describe('remote lazy loading', () => {
     }
   };
 
+  const sourceWithData = {
+    question: {
+      "29": {
+        attributes: {
+          yday: 228,
+          text: "Какие качества Вы больше всего цените в женщинах?",
+          slug: "tbd",
+          id: 29        
+        },
+        relationships: {
+          movie: {
+            data: [],
+            links: {
+              "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
+              "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"            
+            }
+          }
+        }
+      }
+    }
+  };
+
   it('should throw exception', () => {
     const question = build(source, 'question', 29);
 
@@ -154,5 +198,10 @@ describe('remote lazy loading', () => {
     }
 
     throw new Error('test failed');
+  });
+
+  it('should not throw exception', () => {
+    const question = build(sourceWithData, 'question', 29);
+    return expect(isEqual(question.movie, [])).to.be.true;
   });
 });

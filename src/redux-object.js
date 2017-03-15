@@ -1,5 +1,7 @@
 import keys from 'lodash/keys';
 import has from 'lodash/has';
+import isArray from 'lodash/isArray';
+import isNull from 'lodash/isNull';
 
 export default function build(reducer, objectName, id) {
   const ids = id.toString();
@@ -31,13 +33,13 @@ export default function build(reducer, objectName, id) {
 
             const rel = target.relationships[relationship];
 
-            if (rel.id) {
-              const idList = rel.id.split(',');
-
-              if (idList.length === 1) {
-                ret[field] = build(reducer, rel.type, idList[0]);
+            if (typeof rel.data !== 'undefined') {
+              if (isArray(rel.data)) {
+                ret[field] = rel.data.map(child => build(reducer, child.type, child.id));
+              } else if (isNull(rel.data)) {
+                ret[field] = null;
               } else {
-                ret[field] = idList.map(childId => build(reducer, rel.type, childId));
+                ret[field] = build(reducer, rel.data.type, rel.data.id);
               }
             } else {
               if (rel.links) {
