@@ -32,11 +32,18 @@ state:
             id: "295",
             type: "question"
           },
-          liker: {
-            id: "1,2,3",
-            type: "user"
-          },
-          comments: {}
+          liker: [{
+              id: "1",
+              type: "user"
+            }, {
+              id: "2",
+              type: "user",
+            }, {
+              id: "3",
+              type: "user"
+            }
+          ],
+          comments: []
         }
       }
     },
