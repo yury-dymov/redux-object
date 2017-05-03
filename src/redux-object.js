@@ -16,10 +16,6 @@ function buildRelationship(reducer, target, relationship) {
     return build(reducer, rel.data.type, rel.data.id);
   }
 
-  if (rel.links) {
-    throw new Error('Remote lazy loading is not implemented for redux-object. Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2');
-  }
-
   return [];
 }
 
