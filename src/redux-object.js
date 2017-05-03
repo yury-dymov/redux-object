@@ -65,7 +65,7 @@ export default function build(reducer, objectName, id = null, eager = false) {
 
               return ret[field];
             },
-          },
+          }
         );
       }
     });
