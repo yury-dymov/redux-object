@@ -25,6 +25,10 @@ function buildRelationship(reducer, target, relationship) {
 
 
 export default function build(reducer, objectName, id = null, eager = false) {
+  if (!reducer[objectName]) {
+    return null;
+  }
+
   if (id === null) {
     return keys(reducer[objectName]).map(e => build(reducer, objectName, e, eager));
   } else if (Array.isArray(id)) {
