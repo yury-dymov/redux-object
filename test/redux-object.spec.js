@@ -1,90 +1,88 @@
 import { expect } from 'chai';
-import build from '../dist/bundle';
 import isEqual from 'lodash/isEqual';
+import build from '../dist/bundle';
 
-describe('build works', () => {
-  const json = {
+const json = {
     post: {
-      "2620": {
-        id: 2620,
-        attributes: {
-          "text": "hello",
-        },
-        relationships: {
-          daQuestion: {
-            data: {
-              id: "295",
-              type: "question"
-            }
-          },
-          missingRelationship: {
-            data: {
-              id: "296",
-              type: "question"
-            }
-          },
-          liker: {
-            data: [{
-              id: "1",
-              type: "user"
-            },{
-              id: "2",
-              type: "user"
-            },{
-              id: "3",
-              type: "user"
-            }]
-          },
-          comments: {
-            data: []
-          },
-          author: {
-            data: null
-          }
+        "2620": {
+            id: 2620,
+            attributes: {
+                "text": "hello",
+            },
+            relationships: {
+                daQuestion: {
+                    data: {
+                        id: "295",
+                        type: "question"
+                    }
+                },
+                missingRelationship: {
+                    data: {
+                        id: "296",
+                        type: "question"
+                    }
+                },
+                liker: {
+                    data: [{
+                        id: "1",
+                        type: "user"
+                    },{
+                        id: "2",
+                        type: "user"
+                    },{
+                        id: "3",
+                        type: "user"
+                    }]
+                },
+                comments: {
+                    data: []
+                },
+                author: {
+                    data: null
+                }
 
+            }
         }
-      }
     },
     question: {
-      "295": {
-        attributes: {
-          text: "hello?"
+        "295": {
+            attributes: {
+                text: "hello?"
+            }
         }
-      }
     },
     user: {
-      "1": {
-        attributes: {
-	      id: 1,
-          text: "hello?"
+        "1": {
+            attributes: {
+                id: 1,
+                text: "hello?"
+            }
+        },
+        "2": {
+            attributes: {
+                text: "hello?"
+            }
+        },
+        "3": {
+            attributes: {
+                text: "hello?"
+            }
+        },
+        "4": {
+            attributes: {
+            }
         }
-      },
-      "2": {
-        attributes: {
-          text: "hello?"
-        }
-      },
-      "3": {
-        attributes: {
-          text: "hello?"
-        }
-      },
-      "4": {
-        attributes: {
-        }
-      }
     },
     meta: {
-      'posts/me': {
-        data: {
-          post: '2620'
+        'posts/me': {
+            data: {
+                post: '2620'
+            }
         }
-      }
     }
-  };
+};
 
-  
-
+describe('build single object', () => {
   const object = build(json, 'post', 2620);
 
   it('attributes', () => {
@@ -141,6 +139,46 @@ describe('build works', () => {
     const target = { id: "4" };
 
     expect(user).to.be.eql(target);
+  });
+});
+
+describe('build all objects in collection', () => {
+  const list = build(json, 'user');
+
+  it('returns an array', () => {
+    expect(list).to.be.instanceOf(Array);
+  });
+
+  it('returns all items', () => {
+    expect(list.length).to.be.equal(4);
+  });
+
+  it('includes attributes', () => {
+    expect(list[0].text).to.be.equal('hello?');
+  });
+});
+
+describe('build a specific list of objects in collection', () => {
+  const list = build(json, 'user', [2, 4]);
+
+  it('returns an array', () => {
+    expect(list).to.be.instanceOf(Array);
+  });
+
+  it('returns only selected items', () => {
+    expect(list.length).to.be.equal(2);
+    expect(list[0].id).to.be.equal('2');
+    expect(list[1].id).to.be.equal('4');
+  });
+
+  it('includes attributes', () => {
+    expect(list[0].text).to.be.equal('hello?');
+  });
+
+  it('returns a null result for requested items which are not present', () => {
+    const extra = build(json, 'user', [2, 4, 5]);
+    expect(extra.length).to.be.equal(3);
+    expect(extra[2]).to.be.equal(null);
   });
 });
 
@@ -202,6 +240,11 @@ describe('remote lazy loading', () => {
 
     it('should not throw exception', () => {
         const question = build(sourceWithData, 'question', 29);
+        return expect(isEqual(question.movie, [])).to.be.true;
+    });
+
+    it('should ignore remote lazy loading links', () => {
+        const question = build(sourceWithData, 'question', 29, false, true);
         return expect(isEqual(question.movie, [])).to.be.true;
     });
 });
