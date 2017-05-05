@@ -4,19 +4,17 @@ import isArray from 'lodash/isArray';
 import isNull from 'lodash/isNull';
 
 /* eslint no-use-before-define: [1, 'nofunc'] */
-function buildRelationship(reducer, target, relationship, ignoreLinks = false) {
+function buildRelationship(reducer, target, relationship, eager = false, ignoreLinks = false) {
   const rel = target.relationships[relationship];
 
   if (typeof rel.data !== 'undefined') {
     if (isArray(rel.data)) {
-      return rel.data.map(child => build(reducer, child.type, child.id));
+      return rel.data.map(child => build(reducer, child.type, child.id), eager, ignoreLinks);
     } else if (isNull(rel.data)) {
       return null;
     }
-    return build(reducer, rel.data.type, rel.data.id);
-  }
-
-  if (!ignoreLinks && rel.links) {
+    return build(reducer, rel.data.type, rel.data.id, eager,ignoreLinks);
+  } else if (!ignoreLinks && rel.links) {
     throw new Error('Remote lazy loading is not implemented for redux-object. Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2');
   }
 
@@ -29,10 +27,9 @@ export default function build(reducer, objectName, id = null, eager = false, ign
     return null;
   }
 
-  if (id === null) {
-    return keys(reducer[objectName]).map(e => build(reducer, objectName, e, eager));
-  } else if (Array.isArray(id)) {
-    return id.map(e => build(reducer, objectName, e, eager));
+  if (id === null || Array.isArray(id)) {
+    const idList = id || keys(reducer[objectName]);
+    return idList.map(e => build(reducer, objectName, e, eager, ignoreLinks));
   }
 
   const ids = id.toString();
@@ -52,7 +49,7 @@ export default function build(reducer, objectName, id = null, eager = false, ign
   if (target.relationships) {
     keys(target.relationships).forEach((relationship) => {
       if (eager) {
-        ret[relationship] = buildRelationship(reducer, target, relationship, ignoreLinks);
+        ret[relationship] = buildRelationship(reducer, target, relationship, eager, ignoreLinks);
       } else {
         Object.defineProperty(
           ret,
@@ -65,7 +62,7 @@ export default function build(reducer, objectName, id = null, eager = false, ign
                 return ret[field];
               }
 
-              ret[field] = buildRelationship(reducer, target, relationship, ignoreLinks);
+              ret[field] = buildRelationship(reducer, target, relationship, eager, ignoreLinks);
 
               return ret[field];
             },
