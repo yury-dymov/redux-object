@@ -143,3 +143,65 @@ describe('build works', () => {
     expect(user).to.be.eql(target);
   });
 });
+
+describe('remote lazy loading', () => {
+    const source = {
+        question: {
+            "29": {
+                attributes: {
+                    yday: 228,
+                    text: "Какие качества Вы больше всего цените в женщинах?",
+                    slug: "tbd",
+                    id: 29
+                },
+                relationships: {
+                    movie: {
+                        links: {
+                            "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
+                            "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    const sourceWithData = {
+        question: {
+            "29": {
+                attributes: {
+                    yday: 228,
+                    text: "Какие качества Вы больше всего цените в женщинах?",
+                    slug: "tbd",
+                    id: 29
+                },
+                relationships: {
+                    movie: {
+                        data: [],
+                        links: {
+                            "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
+                            "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    it('should throw exception', () => {
+        const question = build(source, 'question', 29);
+
+        try {
+            question.movie;
+        } catch (er) {
+            return expect(er.message).to.be.equal('Remote lazy loading is not implemented for redux-object. Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2');
+        }
+
+        throw new Error('test failed');
+    });
+
+    it('should not throw exception', () => {
+        const question = build(sourceWithData, 'question', 29);
+        return expect(isEqual(question.movie, [])).to.be.true;
+    });
+});

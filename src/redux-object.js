@@ -4,7 +4,7 @@ import isArray from 'lodash/isArray';
 import isNull from 'lodash/isNull';
 
 /* eslint no-use-before-define: [1, 'nofunc'] */
-function buildRelationship(reducer, target, relationship) {
+function buildRelationship(reducer, target, relationship, ignoreLinks = false) {
   const rel = target.relationships[relationship];
 
   if (typeof rel.data !== 'undefined') {
@@ -16,11 +16,15 @@ function buildRelationship(reducer, target, relationship) {
     return build(reducer, rel.data.type, rel.data.id);
   }
 
+  if (!ignoreLinks && rel.links) {
+    throw new Error('Remote lazy loading is not implemented for redux-object. Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2');
+  }
+
   return [];
 }
 
 
-export default function build(reducer, objectName, id = null, eager = false) {
+export default function build(reducer, objectName, id = null, eager = false, ignoreLinks = false) {
   if (!reducer[objectName]) {
     return null;
   }
@@ -48,7 +52,7 @@ export default function build(reducer, objectName, id = null, eager = false) {
   if (target.relationships) {
     keys(target.relationships).forEach((relationship) => {
       if (eager) {
-        ret[relationship] = buildRelationship(reducer, target, relationship);
+        ret[relationship] = buildRelationship(reducer, target, relationship, ignoreLinks);
       } else {
         Object.defineProperty(
           ret,
@@ -61,7 +65,7 @@ export default function build(reducer, objectName, id = null, eager = false) {
                 return ret[field];
               }
 
-              ret[field] = buildRelationship(reducer, target, relationship);
+              ret[field] = buildRelationship(reducer, target, relationship, ignoreLinks);
 
               return ret[field];
             },
