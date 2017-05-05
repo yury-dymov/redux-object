@@ -6,16 +6,16 @@ import isNull from 'lodash/isNull';
 
 /* eslint no-use-before-define: [1, 'nofunc'] */
 function buildRelationship(reducer, target, relationship, options) {
-  const { eager, ignoreLinks } = options;
+  const { ignoreLinks } = options;
   const rel = target.relationships[relationship];
 
   if (typeof rel.data !== 'undefined') {
     if (isArray(rel.data)) {
-      return rel.data.map(child => build(reducer, child.type, child.id), eager, ignoreLinks);
+      return rel.data.map(child => build(reducer, child.type, child.id, options));
     } else if (isNull(rel.data)) {
       return null;
     }
-    return build(reducer, rel.data.type, rel.data.id, eager,ignoreLinks);
+    return build(reducer, rel.data.type, rel.data.id, options);
   } else if (!ignoreLinks && rel.links) {
     throw new Error(`
       Remote lazy loading is not implemented for redux-object. 
@@ -32,7 +32,7 @@ function buildRelationship(reducer, target, relationship, options) {
 export default function build(reducer, objectName, id = null, providedOpts = {}) {
   const defOpts = { eager: false, ignoreLinks: false };
   const options = assign({}, defOpts, providedOpts);
-  const { eager, ignoreLinks } = options;
+  const { eager } = options;
 
   if (!reducer[objectName]) {
     return null;
@@ -40,7 +40,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
 
   if (id === null || Array.isArray(id)) {
     const idList = id || keys(reducer[objectName]);
-    return idList.map(e => build(reducer, objectName, e, eager, ignoreLinks));
+    return idList.map(e => build(reducer, objectName, e, options));
   }
 
   const ids = id.toString();
@@ -60,7 +60,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
   if (target.relationships) {
     keys(target.relationships).forEach((relationship) => {
       if (eager) {
-        ret[relationship] = buildRelationship(reducer, target, relationship, eager, ignoreLinks);
+        ret[relationship] = buildRelationship(reducer, target, relationship, options);
       } else {
         Object.defineProperty(
           ret,
@@ -73,7 +73,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
                 return ret[field];
               }
 
-              ret[field] = buildRelationship(reducer, target, relationship, eager, ignoreLinks);
+              ret[field] = buildRelationship(reducer, target, relationship, options);
 
               return ret[field];
             },
