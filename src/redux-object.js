@@ -1,10 +1,12 @@
 import keys from 'lodash/keys';
 import has from 'lodash/has';
+import assign from 'lodash/assign';
 import isArray from 'lodash/isArray';
 import isNull from 'lodash/isNull';
 
 /* eslint no-use-before-define: [1, 'nofunc'] */
-function buildRelationship(reducer, target, relationship, eager = false, ignoreLinks = false) {
+function buildRelationship(reducer, target, relationship, options) {
+  const { eager, ignoreLinks } = options;
   const rel = target.relationships[relationship];
 
   if (typeof rel.data !== 'undefined') {
@@ -15,14 +17,23 @@ function buildRelationship(reducer, target, relationship, eager = false, ignoreL
     }
     return build(reducer, rel.data.type, rel.data.id, eager,ignoreLinks);
   } else if (!ignoreLinks && rel.links) {
-    throw new Error('Remote lazy loading is not implemented for redux-object. Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2');
+    throw new Error(`
+      Remote lazy loading is not implemented for redux-object. 
+      Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2.
+      If you would like to disable this error, provide 'ingoreLinks: true' option to the build function like below:
+      build(reducer, type, id, { ignoreLinks: true })
+    `);
   }
 
   return [];
 }
 
 
-export default function build(reducer, objectName, id = null, eager = false, ignoreLinks = false) {
+export default function build(reducer, objectName, id = null, providedOpts = {}) {
+  const defOpts = { eager: false, ignoreLinks: false };
+  const options = assign({}, defOpts, providedOpts);
+  const { eager, ignoreLinks } = options;
+
   if (!reducer[objectName]) {
     return null;
   }
