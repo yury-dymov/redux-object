@@ -1,18 +1,12 @@
-import keys from 'lodash/keys';
-import has from 'lodash/has';
-import assign from 'lodash/assign';
-import isArray from 'lodash/isArray';
-import isNull from 'lodash/isNull';
-
 /* eslint no-use-before-define: [1, 'nofunc'] */
 function buildRelationship(reducer, target, relationship, options) {
   const { ignoreLinks } = options;
   const rel = target.relationships[relationship];
 
   if (typeof rel.data !== 'undefined') {
-    if (isArray(rel.data)) {
+    if (Array.isArray(rel.data)) {
       return rel.data.map(child => build(reducer, child.type, child.id, options));
-    } else if (isNull(rel.data)) {
+    } else if (rel.data === null) {
       return null;
     }
     return build(reducer, rel.data.type, rel.data.id, options);
@@ -31,7 +25,7 @@ function buildRelationship(reducer, target, relationship, options) {
 
 export default function build(reducer, objectName, id = null, providedOpts = {}) {
   const defOpts = { eager: false, ignoreLinks: false };
-  const options = assign({}, defOpts, providedOpts);
+  const options = Object.assign({}, defOpts, providedOpts);
   const { eager } = options;
 
   if (!reducer[objectName]) {
@@ -39,7 +33,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
   }
 
   if (id === null || Array.isArray(id)) {
-    const idList = id || keys(reducer[objectName]);
+    const idList = id || Object.keys(reducer[objectName]);
     return idList.map(e => build(reducer, objectName, e, options));
   }
 
@@ -55,10 +49,10 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
     ret.id = target.id;
   }
 
-  keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
+  Object.keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
 
   if (target.relationships) {
-    keys(target.relationships).forEach((relationship) => {
+    Object.keys(target.relationships).forEach((relationship) => {
       if (eager) {
         ret[relationship] = buildRelationship(reducer, target, relationship, options);
       } else {
@@ -83,7 +77,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
     });
   }
 
-  if (!has(ret, 'id')) {
+  if (typeof ret.id === 'undefined') {
     ret.id = ids;
   }
 
