@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import isEqual from 'lodash/isEqual';
 import isFunction from 'lodash/isFunction';
 import build from '../dist/bundle';
@@ -189,7 +189,7 @@ describe('build a specific list of objects in collection', () => {
 
 describe('local eager loading', () => {
   const local = Object.assign({}, json);
-  const object = build(local, 'post', 2620, true);
+  const object = build(local, 'post', 2620, { eager: true });
 
   it('does not use lazy loading', () => {
     local.question[295].attributes.text = 'Goodbye.';
@@ -247,7 +247,7 @@ describe('remote lazy loading', () => {
     try {
       question.movie;
     } catch (er) {
-      return expect(er.message).to.be.equal('Remote lazy loading is not implemented for redux-object. Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2');
+      return expect(er.message).not.to.be.null;
     }
 
     throw new Error('test failed');
@@ -259,7 +259,7 @@ describe('remote lazy loading', () => {
   });
 
   it('should ignore remote lazy loading links', () => {
-    const question = build(sourceWithData, 'question', 29, false, true);
+    const question = build(sourceWithData, 'question', 29, { eager: false, ignoreLinks: true });
     return expect(isEqual(question.movie, [])).to.be.true;
   });
 });
