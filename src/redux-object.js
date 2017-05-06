@@ -17,12 +17,7 @@ function buildRelationship(reducer, target, relationship, options) {
     }
     return build(reducer, rel.data.type, rel.data.id, options);
   } else if (!ignoreLinks && rel.links) {
-    throw new Error(`
-      Remote lazy loading is not implemented for redux-object. 
-      Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2.
-      If you would like to disable this error, provide 'ingoreLinks: true' option to the build function like below:
-      build(reducer, type, id, { ignoreLinks: true })
-    `);
+    throw new Error('Remote lazy loading is not supported (see: https://github.com/yury-dymov/json-api-normalizer/issues/2). To disable this error, include option \'ignoreLinks: true\' in the build function like so: build(reducer, type, id, { ignoreLinks: true })');
   }
 
   return [];
