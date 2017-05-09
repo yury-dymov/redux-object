@@ -1,15 +1,21 @@
 /* eslint no-use-before-define: [1, 'nofunc'] */
-function buildRelationship(reducer, target, relationship, options) {
+function buildRelationship(reducer, target, relationship, options, parentTree = []) {
   const { ignoreLinks } = options;
   const rel = target.relationships[relationship];
 
   if (typeof rel.data !== 'undefined') {
     if (Array.isArray(rel.data)) {
-      return rel.data.map(child => build(reducer, child.type, child.id, options));
+      return rel.data.map(child => {
+        return !parentTree.includes(child.type)
+          ? build(reducer, child.type, child.id, options, parentTree)
+          : null;
+      });
     } else if (rel.data === null) {
       return null;
     }
-    return build(reducer, rel.data.type, rel.data.id, options);
+    return !parentTree.includes(rel.data.type)
+      ? build(reducer, rel.data.type, rel.data.id, options, parentTree)
+      : null;
   } else if (!ignoreLinks && rel.links) {
     throw new Error('Remote lazy loading is not supported (see: https://github.com/yury-dymov/json-api-normalizer/issues/2). To disable this error, include option \'ignoreLinks: true\' in the build function like so: build(reducer, type, id, { ignoreLinks: true })');
   }
@@ -18,8 +24,8 @@ function buildRelationship(reducer, target, relationship, options) {
 }
 
 
-export default function build(reducer, objectName, id = null, providedOpts = {}) {
-  const defOpts = { eager: false, ignoreLinks: false };
+export default function build(reducer, objectName, id = null, providedOpts = {}, parentTree = []) {
+  const defOpts = { eager: false, ignoreLinks: false, source: null };
   const options = Object.assign({}, defOpts, providedOpts);
   const { eager } = options;
 
@@ -49,7 +55,9 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
   if (target.relationships) {
     Object.keys(target.relationships).forEach((relationship) => {
       if (eager) {
-        ret[relationship] = buildRelationship(reducer, target, relationship, options);
+        const newTree = parentTree.slice();
+        newTree.push(objectName);
+        ret[relationship] = buildRelationship(reducer, target, relationship, options, newTree);
       } else {
         Object.defineProperty(
           ret,
@@ -78,4 +86,3 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
 
   return ret;
 }
-

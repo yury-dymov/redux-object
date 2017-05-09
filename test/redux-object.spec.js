@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import isEqual from 'lodash/isEqual';
-import isFunction from 'lodash/isFunction';
 import build from '../dist/bundle';
 
 const json = {
@@ -41,7 +40,6 @@ const json = {
         author: {
           data: null
         }
-
       }
     }
   },
@@ -49,6 +47,14 @@ const json = {
     "295": {
       attributes: {
         text: "hello?"
+      },
+      relationships: {
+        posts: {
+          data: [{
+            id: "2620",
+            type: "post"
+          }]
+        }
       }
     }
   },
@@ -194,6 +200,10 @@ describe('local eager loading', () => {
   it('does not use lazy loading', () => {
     local.question[295].attributes.text = 'Goodbye.';
     expect(object.daQuestion.text).to.be.equal('hello?');
+  });
+
+  it('does not cyclically load parent items in child relationships', () => {
+    expect(object.daQuestion.posts[0]).to.be.null;
   });
 });
 
