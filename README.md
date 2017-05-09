@@ -20,6 +20,7 @@ If ID is provided in a form of array, multiple objects are fetched. If ID is nul
 |:--------|:---------------:|:-------------|
 | eager | false | Controls lazy loading for the child relationship objects. By default, lazy loading is enabled. |
 | ignoreLinks | false | redux-object doesn't support remote objects. This option suppresses the exception thrown in case user accesses a property, which is not loaded to redux store yet. |
+| parentTree | [] | A record of the parent data types in the relationship heiarchy. Eager loading of relationship data is prevented if that item's type is present in this array. Intended for internal use but could also be populated to prevent loading of a specific data type in an eager loading case. |
 
 
 ```JavaScript
