@@ -1,12 +1,17 @@
 /* eslint no-use-before-define: [1, 'nofunc'] */
 function buildRelationship(reducer, target, relationship, options) {
-  const { ignoreLinks } = options;
+  const { ignoreLinks, parentTree } = options;
   const rel = target.relationships[relationship];
 
   if (typeof rel.data !== 'undefined') {
     if (Array.isArray(rel.data)) {
-      return rel.data.map(child => build(reducer, child.type, child.id, options));
-    } else if (rel.data === null) {
+      return rel.data.map((child) => {
+        if (parentTree.indexOf(child.type) !== -1) {
+          return null;
+        }
+        return build(reducer, child.type, child.id, options);
+      });
+    } else if (rel.data === null || parentTree.indexOf(rel.data.type) !== -1) {
       return null;
     }
     return build(reducer, rel.data.type, rel.data.id, options);
@@ -19,7 +24,7 @@ function buildRelationship(reducer, target, relationship, options) {
 
 
 export default function build(reducer, objectName, id = null, providedOpts = {}) {
-  const defOpts = { eager: false, ignoreLinks: false };
+  const defOpts = { eager: false, ignoreLinks: false, parentTree: [] };
   const options = Object.assign({}, defOpts, providedOpts);
   const { eager } = options;
 
@@ -49,6 +54,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
   if (target.relationships) {
     Object.keys(target.relationships).forEach((relationship) => {
       if (eager) {
+        options.parentTree.push(objectName);
         ret[relationship] = buildRelationship(reducer, target, relationship, options);
       } else {
         Object.defineProperty(
@@ -78,4 +84,3 @@ export default function build(reducer, objectName, id = null, providedOpts = {})
 
   return ret;
 }
-
