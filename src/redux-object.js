@@ -6,12 +6,12 @@ function buildRelationship(reducer, target, relationship, options) {
   if (typeof rel.data !== 'undefined') {
     if (Array.isArray(rel.data)) {
       return rel.data.map((child) => {
-        if (parentTree.includes(child.type)) {
+        if (parentTree.indexOf(child.type) !== -1) {
           return null;
         }
         return build(reducer, child.type, child.id, options);
       });
-    } else if (rel.data === null || parentTree.includes(rel.data.type)) {
+    } else if (rel.data === null || parentTree.indexOf(rel.data.type) !== -1) {
       return null;
     }
     return build(reducer, rel.data.type, rel.data.id, options);
