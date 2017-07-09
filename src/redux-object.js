@@ -28,9 +28,9 @@ function buildRelationship(reducer, target, relationship, options, cache) {
 
 
 export default function build(reducer, objectName, id = null, providedOpts = {}, cache = {}) {
-  const defOpts = { eager: false, ignoreLinks: false };
+  const defOpts = { eager: false, ignoreLinks: false, includeType: false };
   const options = Object.assign({}, defOpts, providedOpts);
-  const { eager } = options;
+  const { eager, includeType } = options;
 
   if (!reducer[objectName]) {
     return null;
@@ -62,6 +62,10 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
   }
 
   Object.keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
+
+  if (includeType && !ret.type) {
+    ret.type = objectName;
+  }
 
   cache[uuid] = ret;
 
