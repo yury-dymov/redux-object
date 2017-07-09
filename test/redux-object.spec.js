@@ -49,6 +49,14 @@ const json = {
     "295": {
       attributes: {
         text: "hello?"
+      },
+      relationships: {
+        posts: {
+          data: [{
+            id: "2620",
+            type: "post"
+          }]
+        }
       }
     }
   },
@@ -194,6 +202,11 @@ describe('local eager loading', () => {
   it('does not use lazy loading', () => {
     local.question[295].attributes.text = 'Goodbye.';
     expect(object.daQuestion.text).to.be.equal('hello?');
+  });
+
+  it('should work with cycle dependencies', () => {
+    expect(object.text).to.be.equal('hello');
+    expect(object.daQuestion.posts[0].daQuestion.posts[0].text).to.be.equal('hello');
   });
 });
 

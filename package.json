@@ -1,10 +1,10 @@
 {
   "name": "redux-object",
-  "version": "0.4.2",
+  "version": "0.4.4",
   "description": "Builds complex JS object from normalized redux store. Best works with json-api-normalizer",
-  "main": "dist/bundle.js",
+  "main": "dist/bundle.min.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack -p",
+    "build": "cross-env NODE_ENV=production webpack -p --output-file bundle.min.js && cross-env NODE_ENV=production webpack",
     "clean": "rimraf dist coverage lib",
     "coverage": "cross-env NODE_ENV=production webpack && istanbul cover _mocha -- --compilers js:babel-core/register && NODE_ENV=production webpack -p",
     "lint": "eslint src --ext .js",
