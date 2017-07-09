@@ -1,10 +1,10 @@
 {
   "name": "redux-object",
-  "version": "0.4.0",
+  "version": "0.4.4",
   "description": "Builds complex JS object from normalized redux store. Best works with json-api-normalizer",
-  "main": "dist/bundle.js",
+  "main": "dist/bundle.min.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack -p",
+    "build": "cross-env NODE_ENV=production webpack -p --output-file bundle.min.js && cross-env NODE_ENV=production webpack",
     "clean": "rimraf dist coverage lib",
     "coverage": "cross-env NODE_ENV=production webpack && istanbul cover _mocha -- --compilers js:babel-core/register && NODE_ENV=production webpack -p",
     "lint": "eslint src --ext .js",
@@ -29,6 +29,7 @@
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
+    "babel-plugin-transform-object-assign": "^6.22.0",
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
@@ -41,13 +42,11 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
     "istanbul": "^1.1.0-alpha.1",
+    "lodash": "^4.17.2",
     "mocha": "^3.2.0",
     "rimraf": "^2.5.4",
     "webpack": "^1.14.0",
     "webpack-node-externals": "^1.5.4"
   },
-  "homepage": "https://github.com/yury-dymov/redux-object#readme",
-  "dependencies": {
-    "lodash": "^4.17.2"
-  }
+  "homepage": "https://github.com/yury-dymov/redux-object#readme"
 }

@@ -12,7 +12,15 @@ DEMO - [https://yury-dymov.github.io/json-api-react-redux-example/](https://yury
 Demo sources and description - [https://github.com/yury-dymov/json-api-react-redux-example](https://github.com/yury-dymov/json-api-react-redux-example)
 
 # API
-Library provides `build` function, which takes 3 parameters: state part, object type and ID.
+Library provides `build` function, which takes 4 parameters: redux state part, object type, ID or an array of IDs or null, and options.
+
+If ID is provided in a form of array, multiple objects are fetched. If ID is null, all objects of selected type are fetched.
+
+| Option | Default | Description |
+|:--------|:---------------:|:-------------|
+| eager | false | Controls lazy loading for the child relationship objects. By default, lazy loading is enabled. |
+| ignoreLinks | false | redux-object doesn't support remote objects. This option suppresses the exception thrown in case user accesses a property, which is not loaded to redux store yet. |
+
 
 ```JavaScript
 import build from 'redux-object';
@@ -92,9 +100,14 @@ console.log(post.text); // -> hello
 console.log(post.daQuestion); // -> { id: 295, text: "hello?" }
 console.log(post.liker.length); //-> 3
 console.log(post.liker[0]); // -> { id: 1, name: "Alice" }
+
+// Other examples
+
+const post = build(state.data, 'post', '2620', { eager: true });
+const post = build(state.data, 'post', '2620', { eager: false, ignoreLinks: true });
 ```
 
-Child objects are lazy loaded.
+Child objects are lazy loaded unless eager option is explicitly provided.
 
 # License
 MIT (c) Yury Dymov

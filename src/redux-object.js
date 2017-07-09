@@ -1,38 +1,55 @@
-import keys from 'lodash/keys';
-import has from 'lodash/has';
-import isArray from 'lodash/isArray';
-import isNull from 'lodash/isNull';
-
 /* eslint no-use-before-define: [1, 'nofunc'] */
-function buildRelationship(reducer, target, relationship, eager = false, ignoreLinks = false) {
+
+function uniqueId(objectName, id) {
+  if (!id) {
+    return null;
+  }
+
+  return `${objectName}${id}`;
+}
+
+function buildRelationship(reducer, target, relationship, options, cache) {
+  const { ignoreLinks } = options;
   const rel = target.relationships[relationship];
 
   if (typeof rel.data !== 'undefined') {
-    if (isArray(rel.data)) {
-      return rel.data.map(child => build(reducer, child.type, child.id), eager, ignoreLinks);
-    } else if (isNull(rel.data)) {
+    if (Array.isArray(rel.data)) {
+      return rel.data.map(child => build(reducer, child.type, child.id, options, cache));
+    } else if (rel.data === null) {
       return null;
     }
-    return build(reducer, rel.data.type, rel.data.id, eager,ignoreLinks);
+    return build(reducer, rel.data.type, rel.data.id, options, cache);
   } else if (!ignoreLinks && rel.links) {
-    throw new Error('Remote lazy loading is not implemented for redux-object. Please refer https://github.com/yury-dymov/json-api-normalizer/issues/2');
+    throw new Error('Remote lazy loading is not supported (see: https://github.com/yury-dymov/json-api-normalizer/issues/2). To disable this error, include option \'ignoreLinks: true\' in the build function like so: build(reducer, type, id, { ignoreLinks: true })');
   }
 
   return [];
 }
 
 
-export default function build(reducer, objectName, id = null, eager = false, ignoreLinks = false) {
+export default function build(reducer, objectName, id = null, providedOpts = {}, cache = {}) {
+  const defOpts = { eager: false, ignoreLinks: false };
+  const options = Object.assign({}, defOpts, providedOpts);
+  const { eager } = options;
+
   if (!reducer[objectName]) {
     return null;
   }
 
   if (id === null || Array.isArray(id)) {
-    const idList = id || keys(reducer[objectName]);
-    return idList.map(e => build(reducer, objectName, e, eager, ignoreLinks));
+    const idList = id || Object.keys(reducer[objectName]);
+
+    return idList.map(e => build(reducer, objectName, e, options, cache));
   }
 
   const ids = id.toString();
+  const uuid = uniqueId(objectName, ids);
+  const cachedObject = cache[uuid];
+
+  if (cachedObject) {
+    return cachedObject;
+  }
+
   const ret = {};
   const target = reducer[objectName][ids];
 
@@ -44,12 +61,14 @@ export default function build(reducer, objectName, id = null, eager = false, ign
     ret.id = target.id;
   }
 
-  keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
+  Object.keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
+
+  cache[uuid] = ret;
 
   if (target.relationships) {
-    keys(target.relationships).forEach((relationship) => {
+    Object.keys(target.relationships).forEach((relationship) => {
       if (eager) {
-        ret[relationship] = buildRelationship(reducer, target, relationship, eager, ignoreLinks);
+        ret[relationship] = buildRelationship(reducer, target, relationship, options, cache);
       } else {
         Object.defineProperty(
           ret,
@@ -62,7 +81,7 @@ export default function build(reducer, objectName, id = null, eager = false, ign
                 return ret[field];
               }
 
-              ret[field] = buildRelationship(reducer, target, relationship, eager, ignoreLinks);
+              ret[field] = buildRelationship(reducer, target, relationship, options, cache);
 
               return ret[field];
             },
@@ -72,7 +91,7 @@ export default function build(reducer, objectName, id = null, eager = false, ign
     });
   }
 
-  if (!has(ret, 'id')) {
+  if (typeof ret.id === 'undefined') {
     ret.id = ids;
   }
 
