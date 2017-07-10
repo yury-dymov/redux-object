@@ -276,3 +276,16 @@ describe('remote lazy loading', () => {
     return expect(isEqual(question.movie, [])).to.be.true;
   });
 });
+
+describe('Include object type', () => {
+  const local = Object.assign({}, json);
+  const object = build(local, 'post', 2620, { includeType: true });
+
+  it('should include object type on base', () => {
+    expect(object.type).to.be.equal('post');
+  });
+
+  it('should include object type on relationships', () => {
+    expect(object.daQuestion.type).to.be.equal('question');
+  });
+});
