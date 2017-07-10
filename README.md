@@ -20,6 +20,7 @@ If ID is provided in a form of array, multiple objects are fetched. If ID is nul
 |:--------|:---------------:|:-------------|
 | eager | false | Controls lazy loading for the child relationship objects. By default, lazy loading is enabled. |
 | ignoreLinks | false | redux-object doesn't support remote objects. This option suppresses the exception thrown in case user accesses a property, which is not loaded to redux store yet. |
+| includeType | false | Include the record type as a property 'type' on each result. This is particularly useful for identifying the record type returned by a polymorphic relationship. |
 
 
 ```JavaScript
