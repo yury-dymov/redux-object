@@ -288,10 +288,18 @@ describe('remote lazy loading', () => {
     return expect(isEqual(question.movie, [])).to.be.true;
   });
 
-  it('should ignore remote lazy loading links', () => {
-    const question = build(sourceWithData, 'question', 29, { eager: false, ignoreLinks: true });
-    return expect(isEqual(question.movie, [])).to.be.true;
+  describe('with ignoreLinks=true', () => {
+    it('should ignore remote lazy loading links', () => {
+      const question = build(sourceWithData, 'question', 29, { eager: false, ignoreLinks: true });
+      return expect(isEqual(question.movie, [])).to.be.true;
+    });
+
+    it('returns undefined if data was undefined', () => {
+      const question = build(source, 'question', 29, { eager: false, ignoreLinks: true });
+      return expect(isEqual(question.movie, undefined)).to.be.true;
+    });
   });
+
 });
 
 describe('Include object type', () => {
