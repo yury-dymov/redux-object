@@ -11,6 +11,9 @@ const json = {
       attributes: {
         "text": "hello",
       },
+      meta: {
+        'like-count': 49
+      },
       relationships: {
         daQuestion: {
           data: {
@@ -107,7 +110,9 @@ describe('build single object', () => {
   it('attributes', () => {
     expect(object.text).to.be.equal('hello');
   });
-
+  it('resource meta', () => {
+    expect(object.meta['like-count']).to.be.equal(49);
+  });
   it('many relationships', () => {
     expect(object.liker.length).to.be.equal(3);
   });
