@@ -1,3 +1,6 @@
+### Version 0.5.2 (25th September 2017)
+Added 'meta' support per spec (https://github.com/yury-dymov/redux-object/issues/22)
+
 ### Version 0.5.1 (12th September 2017)
 Fixed returning empty array for relationships without data when ignoreLinks is true (https://github.com/yury-dymov/redux-object/issues/20)
 
