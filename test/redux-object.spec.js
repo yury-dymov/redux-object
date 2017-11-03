@@ -110,9 +110,11 @@ describe('build single object', () => {
   it('attributes', () => {
     expect(object.text).to.be.equal('hello');
   });
+
   it('resource meta', () => {
     expect(object.meta['like-count']).to.be.equal(49);
   });
+
   it('many relationships', () => {
     expect(object.liker.length).to.be.equal(3);
   });
@@ -148,6 +150,14 @@ describe('build single object', () => {
     const user = build(local, 'user', 1);
 
     expect(user.id).to.be.equal(1); // and not '1'
+  });
+
+  it('attribute is enumerable', () => {
+    expect(object.propertyIsEnumerable('text')).to.be.true;
+  });
+
+  it('relationship attribute is enumerable', () => {
+    expect(object.liker[0].propertyIsEnumerable('text')).to.be.true;
   });
 
   it('missing object should return null', () => {
