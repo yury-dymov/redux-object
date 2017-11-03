@@ -1,6 +1,6 @@
 {
   "name": "redux-object",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Builds complex JS object from normalized redux store. Best works with json-api-normalizer",
   "main": "dist/bundle.min.js",
   "scripts": {

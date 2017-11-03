@@ -1,3 +1,6 @@
+### Version 0.5.3 (3d November 2017)
+Object properties are enumerable (https://github.com/yury-dymov/redux-object/pull/25)
+
 ### Version 0.5.2 (25th September 2017)
 Added 'meta' support per spec (https://github.com/yury-dymov/redux-object/issues/22)
 
