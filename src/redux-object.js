@@ -82,6 +82,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
           ret,
           relationship,
           {
+            enumerable: true,
             get: () => {
               const field = `__${relationship}`;
 
