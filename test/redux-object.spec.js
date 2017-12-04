@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import isEqual from 'lodash/isEqual';
-import isFunction from 'lodash/isFunction';
 import cloneDeep from 'lodash/cloneDeep';
 import build from '../dist/bundle';
 
