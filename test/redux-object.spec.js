@@ -159,6 +159,20 @@ describe('build single object', () => {
     expect(object.liker[0].propertyIsEnumerable('text')).to.be.true;
   });
 
+  it('only enumerates public attributes', () => {
+    expect(Object.keys(object).sort()).to.deep.equal([
+      'author',
+      'comments',
+      'daQuestion',
+      'id',
+      'liker',
+      'meta',
+      'missingAndPresent',
+      'missingRelationship',
+      'text',
+    ]);
+  });
+
   it('missing object should return null', () => {
     const user = build(local, 'user', 30);
 
