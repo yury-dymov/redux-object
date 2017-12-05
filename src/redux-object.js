@@ -90,7 +90,8 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
                 return ret[field];
               }
 
-              ret[field] = buildRelationship(reducer, target, relationship, options, cache);
+              const value = buildRelationship(reducer, target, relationship, options, cache);
+              Object.defineProperty(ret, field, { enumerable: false, value });
 
               return ret[field];
             },
