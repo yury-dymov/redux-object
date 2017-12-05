@@ -1,3 +1,6 @@
+### Version 0.5.4 (5th November 2017)
+Private cache attributes are not enumerable for object returned by `build` (https://github.com/yury-dymov/redux-object/pull/31)
+
 ### Version 0.5.3 (3d November 2017)
 Object properties are enumerable (https://github.com/yury-dymov/redux-object/pull/25)
 
