@@ -61,8 +61,10 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
     ret.id = target.id;
   }
 
-  Object.keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
-
+  if (target.attributes) {
+    Object.keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
+  }
+  
   if (target.meta) {
     ret.meta = target.meta;
   }
