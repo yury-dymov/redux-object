@@ -1,3 +1,6 @@
+### Version 0.5.5 (2nd January 2017)
+Fixes bug, when object doesn't have any attributes (https://github.com/yury-dymov/redux-object/pull/32)
+
 ### Version 0.5.4 (5th November 2017)
 Private cache attributes are not enumerable for object returned by `build` (https://github.com/yury-dymov/redux-object/pull/31)
 
