@@ -1,5 +1,33 @@
 /* eslint no-use-before-define: [1, 'nofunc'] */
 
+// Immutable helpers
+
+function isImmutable(object) {
+  return !!(
+    object &&
+    typeof object.hasOwnProperty === 'function' &&
+    (object.hasOwnProperty('__ownerID') || // eslint-disable-line
+      (object._map && object._map.hasOwnProperty('__ownerID'))) // eslint-disable-line
+  );
+}
+
+function getProperty(object, property, toJS = false) {
+  if (!Array.isArray(property)) {
+    property = [property];
+  }
+  if (isImmutable(object)) {
+    const res = object.getIn(property.map(p => `${p}`)); // Immutable maps cast keys to strings
+    return (toJS && res) ? res.toJS() : res;
+  }
+  return property.reduce((previous, current) => previous[current], object);
+}
+
+function getKeys(object) {
+  return isImmutable(object) ? object.keySeq().toArray() : Object.keys(object);
+}
+
+// build helpers
+
 function uniqueId(objectName, id) {
   if (!id) {
     return null;
@@ -32,12 +60,12 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
   const options = Object.assign({}, defOpts, providedOpts);
   const { eager, includeType } = options;
 
-  if (!reducer[objectName]) {
+  if (!getProperty(reducer, objectName)) {
     return null;
   }
 
   if (id === null || Array.isArray(id)) {
-    const idList = id || Object.keys(reducer[objectName]);
+    const idList = id || getKeys(getProperty(reducer, objectName));
 
     return idList.map(e => build(reducer, objectName, e, options, cache));
   }
@@ -51,7 +79,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
   }
 
   const ret = {};
-  const target = reducer[objectName][ids];
+  const target = getProperty(reducer, [objectName, ids], true);
 
   if (!target) {
     return null;
