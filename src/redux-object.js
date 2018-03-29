@@ -92,7 +92,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
   if (target.attributes) {
     Object.keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
   }
-  
+
   if (target.meta) {
     ret.meta = target.meta;
   }

@@ -1,3 +1,6 @@
+### Version 0.5.6 (29th March 2018)
+Added support for immutable.js (https://github.com/yury-dymov/redux-object/pull/34)
+
 ### Version 0.5.5 (2nd January 2018)
 Fixes bug, when object doesn't have any attributes (https://github.com/yury-dymov/redux-object/pull/32)
 
