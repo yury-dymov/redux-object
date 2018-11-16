@@ -11,6 +11,9 @@ const json = {
       attributes: {
         "text": "hello",
       },
+      links: {
+        "self": "http://example.com/posts/2620"
+      },
       meta: {
         'like-count': 49
       },
@@ -117,6 +120,10 @@ const runTests = (jsonFunc, description, allowMutations = true) => {
         expect(object.meta['like-count']).to.be.equal(49);
       });
 
+      it('resource links', () => {
+        expect(object.links.self).to.be.equal('http://example.com/posts/2620');
+      });
+
       it('many relationships', () => {
         expect(object.liker.length).to.be.equal(3);
       });
@@ -173,6 +180,7 @@ const runTests = (jsonFunc, description, allowMutations = true) => {
           'daQuestion',
           'id',
           'liker',
+          'links',
           'meta',
           'missingAndPresent',
           'missingRelationship',
