@@ -1,3 +1,6 @@
+### Version 0.5.7 (16th November 2018)
+Added support for links (https://github.com/yury-dymov/redux-object/pull/37). Updated vulnerable deps
+
 ### Version 0.5.6 (29th March 2018)
 Added support for immutable.js (https://github.com/yury-dymov/redux-object/pull/34)
 

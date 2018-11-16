@@ -4,10 +4,10 @@
 
 function isImmutable(object) {
   return !!(
-    object &&
-    typeof object.hasOwnProperty === 'function' &&
-    (object.hasOwnProperty('__ownerID') || // eslint-disable-line
-      (object._map && object._map.hasOwnProperty('__ownerID'))) // eslint-disable-line
+    object
+    && typeof object.hasOwnProperty === 'function'
+    && (object.hasOwnProperty('__ownerID') // eslint-disable-line
+    || (object._map && object._map.hasOwnProperty('__ownerID'))) // eslint-disable-line
   );
 }
 
@@ -43,11 +43,16 @@ function buildRelationship(reducer, target, relationship, options, cache) {
   if (typeof rel.data !== 'undefined') {
     if (Array.isArray(rel.data)) {
       return rel.data.map(child => build(reducer, child.type, child.id, options, cache) || child);
-    } else if (rel.data === null) {
+    }
+
+    if (rel.data === null) {
       return null;
     }
+
     return build(reducer, rel.data.type, rel.data.id, options, cache) || rel.data;
-  } else if (!ignoreLinks && rel.links) {
+  }
+
+  if (!ignoreLinks && rel.links) {
     throw new Error('Remote lazy loading is not supported (see: https://github.com/yury-dymov/json-api-normalizer/issues/2). To disable this error, include option \'ignoreLinks: true\' in the build function like so: build(reducer, type, id, { ignoreLinks: true })');
   }
 
@@ -141,4 +146,3 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
 
   return ret;
 }
-

@@ -1,14 +1,14 @@
 {
   "name": "redux-object",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Builds complex JS object from normalized redux store. Best works with json-api-normalizer",
   "main": "dist/bundle.min.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack -p --output-file bundle.min.js && cross-env NODE_ENV=production webpack",
+    "build": "cross-env NODE_ENV=production webpack -p --output-filename bundle.min.js && cross-env NODE_ENV=production webpack",
     "clean": "rimraf dist coverage lib",
-    "coverage": "cross-env NODE_ENV=production webpack && istanbul cover _mocha -- --compilers js:babel-core/register && NODE_ENV=production webpack -p",
+    "coverage": "cross-env NODE_ENV=production webpack && istanbul cover _mocha -- --compilers js:@babel/register && NODE_ENV=production webpack -p",
     "lint": "eslint src --ext .js",
-    "test": "mocha --compilers js:babel-core/register"
+    "test": "mocha --compilers js:@babel/register"
   },
   "repository": {
     "type": "git",
@@ -26,28 +26,26 @@
     "url": "https://github.com/yury-dymov/redux-object/issues"
   },
   "devDependencies": {
-    "babel-core": "^6.21.0",
-    "babel-eslint": "^7.1.1",
-    "babel-loader": "^6.2.10",
-    "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
-    "chai": "^3.5.0",
-    "cross-env": "^4.0.0",
-    "eslint": "^3.12.2",
-    "eslint-config-airbnb": "^13.0.0",
-    "eslint-loader": "^1.6.1",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^2.2.3",
-    "eslint-plugin-react": "^6.8.0",
-    "immutable": "^3.8.2",
+    "@babel/core": "^7.1.6",
+    "@babel/preset-env": "^7.1.6",
+    "@babel/register": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.0",
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-loader": "^2.1.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "immutable": "^4.0.0-rc.12",
     "istanbul": "^1.1.0-alpha.1",
-    "lodash": "^4.17.2",
-    "mocha": "^3.2.0",
-    "rimraf": "^2.5.4",
-    "webpack": "^1.14.0",
-    "webpack-node-externals": "^1.5.4"
+    "lodash": "^4.17.5",
+    "mocha": "^5.2.0",
+    "rimraf": "^2.6.2",
+    "webpack": "^3.12.0",
+    "webpack-node-externals": "^1.7.2"
   },
   "homepage": "https://github.com/yury-dymov/redux-object#readme"
 }
