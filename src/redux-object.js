@@ -97,6 +97,10 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
     ret.meta = target.meta;
   }
 
+  if (target.links) {
+    ret.links = target.links;
+  }
+
   if (includeType && !ret.type) {
     ret.type = objectName;
   }
