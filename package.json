@@ -1,6 +1,6 @@
 {
   "name": "redux-object",
-  "version": "0.5.7",
+  "version": "0.5.8",
   "description": "Builds complex JS object from normalized redux store. Best works with json-api-normalizer",
   "main": "dist/bundle.min.js",
   "scripts": {
@@ -26,8 +26,8 @@
     "url": "https://github.com/yury-dymov/redux-object/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.6",
-    "@babel/preset-env": "^7.1.6",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
     "@babel/register": "^7.0.0",
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.0",

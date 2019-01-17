@@ -1,3 +1,6 @@
+### Version 0.5.8 (16th January 2019)
+Introduced `resolved` property (https://github.com/yury-dymov/redux-object/pull/38)
+
 ### Version 0.5.7 (16th November 2018)
 Added support for links (https://github.com/yury-dymov/redux-object/pull/37). Updated vulnerable deps
 
