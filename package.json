@@ -1,12 +1,12 @@
 {
   "name": "redux-object",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "Builds complex JS object from normalized redux store. Best works with json-api-normalizer",
   "main": "dist/bundle.min.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack -p --output-filename bundle.min.js && cross-env NODE_ENV=production webpack",
     "clean": "rimraf dist coverage lib",
-    "coverage": "cross-env NODE_ENV=production webpack && istanbul cover _mocha -- --compilers js:@babel/register && NODE_ENV=production webpack -p",
+    "coverage": "cross-env NODE_ENV=production webpack && nyc _mocha --compilers js:@babel/register && NODE_ENV=production webpack -p",
     "lint": "eslint src --ext .js",
     "test": "mocha --compilers js:@babel/register"
   },
@@ -33,16 +33,16 @@
     "babel-loader": "^8.0.0",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
-    "eslint": "^5.9.0",
+    "eslint": "^5.12.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.11.1",
     "immutable": "^4.0.0-rc.12",
-    "istanbul": "^1.1.0-alpha.1",
     "lodash": "^4.17.5",
     "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
     "rimraf": "^2.6.2",
     "webpack": "^3.12.0",
     "webpack-node-externals": "^1.7.2"

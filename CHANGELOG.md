@@ -1,3 +1,6 @@
+### Version 0.5.9 (17th January 2019)
+Deps update; istanbul -> nyc for code coverage reporting
+
 ### Version 0.5.8 (16th January 2019)
 Introduced `resolved` property (https://github.com/yury-dymov/redux-object/pull/38)
 
