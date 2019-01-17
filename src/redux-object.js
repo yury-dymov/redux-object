@@ -96,6 +96,7 @@ export default function build(reducer, objectName, id = null, providedOpts = {},
 
   if (target.attributes) {
     Object.keys(target.attributes).forEach((key) => { ret[key] = target.attributes[key]; });
+    Object.defineProperty(ret, 'resolved', { value: true });
   }
 
   if (target.meta) {
