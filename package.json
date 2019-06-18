@@ -1,6 +1,6 @@
 {
   "name": "redux-object",
-  "version": "0.5.9",
+  "version": "0.5.10",
   "description": "Builds complex JS object from normalized redux store. Best works with json-api-normalizer",
   "main": "dist/bundle.min.js",
   "scripts": {
@@ -33,7 +33,7 @@
     "babel-loader": "^8.0.0",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
-    "eslint": "^5.12.0",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-loader": "^2.1.1",
     "eslint-plugin-import": "^2.14.0",

@@ -1,3 +1,6 @@
+### Version 0.5.10 (17th June 2019)
+Updated vulnerable deps
+
 ### Version 0.5.9 (17th January 2019)
 Deps update; istanbul -> nyc for code coverage reporting
 
