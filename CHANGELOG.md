@@ -1,3 +1,6 @@
+### Version 1.0.0 (2nd December 2020)
+Deps update
+
 ### Version 0.5.10 (17th June 2019)
 Updated vulnerable deps
 

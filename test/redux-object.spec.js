@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { fromJS } from 'immutable';
 import isEqual from 'lodash/isEqual';
 import cloneDeep from 'lodash/cloneDeep';
-import build from '../dist/bundle';
+import build from '../dist/bundle.min';
 
 const json = {
   post: {
@@ -216,15 +216,15 @@ const runTests = (jsonFunc, description, allowMutations = true) => {
     describe('build all objects in collection', () => {
       const local = jsonFunc(json);
       const list = build(local, 'user');
-    
+
       it('returns an array', () => {
         expect(list).to.be.instanceOf(Array);
       });
-    
+
       it('returns all items', () => {
         expect(list.length).to.be.equal(4);
       });
-    
+
       it('includes attributes', () => {
         expect(list[0].text).to.be.equal('hello?');
       });
@@ -233,21 +233,21 @@ const runTests = (jsonFunc, description, allowMutations = true) => {
     describe('build a specific list of objects in collection', () => {
       const local = jsonFunc(json);
       const list = build(local, 'user', [2, 4]);
-    
+
       it('returns an array', () => {
         expect(list).to.be.instanceOf(Array);
       });
-    
+
       it('returns only selected items', () => {
         expect(list.length).to.be.equal(2);
         expect(list[0].id).to.be.equal('2');
         expect(list[1].id).to.be.equal('4');
       });
-    
+
       it('includes attributes', () => {
         expect(list[0].text).to.be.equal('hello?');
       });
-    
+
       it('returns a null result for requested items which are not present', () => {
         const extra = build(local, 'user', [2, 4, 5]);
         expect(extra.length).to.be.equal(3);
