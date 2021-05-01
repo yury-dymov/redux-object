@@ -3,6 +3,7 @@ demo
 docs
 src
 test
+.nyc_output
 .babelrc
 .eslintrc
 .travis.yml
