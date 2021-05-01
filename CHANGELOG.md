@@ -1,3 +1,6 @@
+### Version 1.0.1 (30th April 2021)
+IE 11 backward compatibility support via core-js 3 polyfilling
+
 ### Version 1.0.0 (2nd December 2020)
 Deps update
 
